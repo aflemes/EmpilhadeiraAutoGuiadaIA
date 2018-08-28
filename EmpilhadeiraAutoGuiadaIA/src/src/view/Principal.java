@@ -72,6 +72,17 @@ public class Principal extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
+    private String mapa[][] = {{"NO","NS" ,"NS" ,"NS" ,"NL" ,"NO","NS" ,"NS" ,"NL" ,"NO"},
+                               {"OL","ONS","NS" ,"NS" ,"SL" ,"OL","ON" ,"NL" ,"OS" ,"SL"},
+                               {"O ","NS" ,"NS" ,"NS" ,"NS" ,"L ","OSL","O"  ,"NS" ,"NL"},
+                               {"OS","NS" ,"NS" ,"NL" ,"ONS","S" ,"NS" ,"SL" ,"ONL","OL"},
+                               {"ON","NSL","ON" ,"L"  ,"ON" ,"NS","NS" ,"NS" ,"SL" ,"SO"},
+                               {"OS","NS" ,"L"  ,"O"  ,"S"  ,"NS","NS" ,"NS" ,"NS" ,"NL"},
+                               {"ON","NS" ,"SL" ,"OL" ,"ONS","N" ,"NL" ,"NO" ,"NS" ,"NL"},
+                               {"O" ,"N"  ,"NS" ,"S"  ,"N"  ,"L" ,"OL" ,"OS" ,"NS" ,"NL"},
+                               {"OL","OL" ,"ONS","NSL","OL" ,"OL","OS" ,"NS" ,"NS" ,"L" },
+                               {"SL","OS" ,"NS" ,"NS" ,"SL" ,"OS","NS" ,"NS" ,"NS" ,"SL"}};
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -105,35 +116,93 @@ public class Principal extends javax.swing.JFrame {
     }
     
     public void initLabirinto(){
-        JPanel labirinto[][] = new JPanel[10][10];
-        int coordenadaX = 0, coordenadaY = 0;
+        initNodos();
         
-        coordenadaY = 100;
+    }
+            
+    public void initNodos(){
+        JPanel labirinto[][] = new JPanel[12][12];
+        int coordenadaX = 0, coordenadaY = 0;
+        coordenadaY = 60;
         coordenadaX = 50;
         
         for (int y = 0; y < 10; y++) {
             JPanel nodo = new JPanel();
             nodo.setSize(50, 40);
-            nodo.setBackground(Color.black);
-            nodo.setLocation(coordenadaY, coordenadaX);
+            nodo.setOpaque(false);
+//            nodo.setBackground(Color.white);
+            nodo.setLocation(coordenadaX, coordenadaY);
             nodo.setVisible(true);
+            nodo.setLayout(null);
             
             this.add(nodo);
             
             for (int x = 0; x < 10; x++) {
                 labirinto[x][y] = nodo;
                 
-                coordenadaX += 41;
+                coordenadaX += 50;
                 
                 nodo = new JPanel();
                 nodo.setSize(50, 40);
-                nodo.setBackground(Color.black);
-                nodo.setLocation(coordenadaY, coordenadaX);
+                nodo.setOpaque(false);
+//                nodo.setBackground(Color.white);
+                nodo.setLocation(coordenadaX, coordenadaY);
+                nodo.setLayout(null);
+                if (!mapa[y][x].equals(" ")){
+                    nodo = initParedes(mapa[y][x],nodo);
+                }
+                
                 this.add(nodo);
             }
-            coordenadaY += 51;
+            coordenadaY += 40;
             coordenadaX = 50;
         }
+    }
+    
+    public JPanel initParedes(String value,JPanel nodo){
+        JPanel parede; 
+        int counter = 0;
+        String newValue;
+        Color corParede = Color.blue;
+        
+        while(true){
+            try{
+                newValue = value.substring(counter, counter + 1);
+                counter++;
+            }
+            catch(Exception e){
+                break;
+            }
+            
+            parede = new JPanel();
+            parede.setVisible(true);
+            
+            switch(newValue){
+                case "N":
+                    parede.setBackground(corParede);
+                    parede.setSize(50,4);
+                    parede.setLocation(0, 0);
+                    break;
+                case "O":
+                    parede.setBackground(corParede);
+                    parede.setSize(4,40);
+                    parede.setLocation(0, 0);
+                    break;
+                case "L":
+                    parede.setBackground(corParede);
+                    parede.setSize(4,40);
+                    parede.setLocation(46, 0);
+                    break;
+                case "S":
+                    parede.setBackground(corParede);
+                    parede.setSize(50,4);
+                    parede.setLocation(0, 36);
+                    break;
+            }
+            nodo.add(parede);
+        }
+        
+        return nodo;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
