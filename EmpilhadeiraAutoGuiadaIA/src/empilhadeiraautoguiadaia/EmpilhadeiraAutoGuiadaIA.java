@@ -9,7 +9,8 @@ package empilhadeiraautoguiadaia;
  *
  * @author skyli
  */
-import src.view.Principal;
+import empilhadeiraautoguiadaia.view.Principal;
+
 public class EmpilhadeiraAutoGuiadaIA {
 
     /**

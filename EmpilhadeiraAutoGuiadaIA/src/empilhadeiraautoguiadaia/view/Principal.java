@@ -1,24 +1,47 @@
+package empilhadeiraautoguiadaia.view;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package src.view;
+
 
 import java.awt.Color;
 import javax.swing.JPanel;
+import empilhadeiraautoguiadaia.controller.InteligenciaController;
+import empilhadeiraautoguiadaia.model.Solucao;
+import java.util.ArrayList;
 
 /**
  *
  * @author skyli
  */
 public class Principal extends javax.swing.JFrame {
-
+    /**
+     * @param args the command line arguments
+     */
+    private String mapa[][] = {{"NO","NS" ,"NS" ,"NS" ,"NL" ,"NO","NS" ,"NS" ,"NL" ,"NO","X"},
+                               {"OL","ONS","NS" ,"NS" ,"SL" ,"OL","ON" ,"NL" ,"OS" ,"SL",""},
+                               {"O ","NS" ,"NS" ,"NS" ,"NS" ,"L ","OSL","O"  ,"NS" ,"NL",""},
+                               {"OS","NS" ,"NS" ,"NL" ,"ONS","S" ,"NS" ,"SL" ,"ONL","OL",""},
+                               {"ON","NSL","ON" ,"L"  ,"ON" ,"NS","NS" ,"NS" ,"SL" ,"SO","X"},
+                               {"OS","NS" ,"L"  ,"O"  ,"S"  ,"NS","NS" ,"NS" ,"NS" ,"NL",""},
+                               {"ON","NS" ,"SL" ,"OL" ,"ONS","N" ,"NL" ,"NO" ,"NS" ,"NL",""},
+                               {"O" ,"N"  ,"NS" ,"S"  ,"N"  ,"L" ,"OL" ,"OS" ,"NS" ,"NL",""},
+                               {"OL","OL" ,"ONS","NSL","OL" ,"OL","OS" ,"NS" ,"NS" ,"L" ,""},
+                               {"SL","OS" ,"NS" ,"NS" ,"SL" ,"OS","NS" ,"NS" ,"NS" ,"SL",""}};
+    
+    private int taxaMutacao;
+    private int taxaPopulacao;
+    private int taxaCrossover;
     /**
      * Creates new form Principal
      */
+    
     public Principal() {
         initComponents();
+        initTela();
         initLabirinto();
     }
 
@@ -33,6 +56,13 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        lblPopulacao = new javax.swing.JLabel();
+        lblCrossOver = new javax.swing.JLabel();
+        lblMutacao = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Empilhadeira AutoGuiada ");
@@ -43,45 +73,106 @@ public class Principal extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Saída");
 
+        jButton1.setText("Iniciar");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("População:");
+
+        jLabel4.setText("Taxa de Crossover:");
+
+        jLabel5.setText("Taxa de mutação:");
+
+        lblPopulacao.setMaximumSize(new java.awt.Dimension(53, 14));
+        lblPopulacao.setMinimumSize(new java.awt.Dimension(53, 14));
+        lblPopulacao.setName("jlblPopulacao"); // NOI18N
+
+        lblCrossOver.setName("jlblCrossover"); // NOI18N
+
+        lblMutacao.setName("jlblMutacao"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addGap(35, 35, 35))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 635, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblPopulacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblCrossOver)
+                            .addComponent(lblMutacao))))
+                .addGap(52, 52, 52))
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addContainerGap()
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(661, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(36, 36, 36))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(39, 39, 39)
+                .addGap(40, 40, 40)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 441, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 309, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(lblPopulacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(lblCrossOver))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(lblMutacao))
+                .addGap(18, 18, 18)
                 .addComponent(jLabel1)
-                .addGap(41, 41, 41))
+                .addGap(2, 2, 2)
+                .addComponent(jButton1)
+                .addGap(30, 30, 30))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    private String mapa[][] = {{"NO","NS" ,"NS" ,"NS" ,"NL" ,"NO","NS" ,"NS" ,"NL" ,"NO"},
-                               {"OL","ONS","NS" ,"NS" ,"SL" ,"OL","ON" ,"NL" ,"OS" ,"SL"},
-                               {"O ","NS" ,"NS" ,"NS" ,"NS" ,"L ","OSL","O"  ,"NS" ,"NL"},
-                               {"OS","NS" ,"NS" ,"NL" ,"ONS","S" ,"NS" ,"SL" ,"ONL","OL"},
-                               {"ON","NSL","ON" ,"L"  ,"ON" ,"NS","NS" ,"NS" ,"SL" ,"SO"},
-                               {"OS","NS" ,"L"  ,"O"  ,"S"  ,"NS","NS" ,"NS" ,"NS" ,"NL"},
-                               {"ON","NS" ,"SL" ,"OL" ,"ONS","N" ,"NL" ,"NO" ,"NS" ,"NL"},
-                               {"O" ,"N"  ,"NS" ,"S"  ,"N"  ,"L" ,"OL" ,"OS" ,"NS" ,"NL"},
-                               {"OL","OL" ,"ONS","NSL","OL" ,"OL","OS" ,"NS" ,"NS" ,"L" },
-                               {"SL","OS" ,"NS" ,"NS" ,"SL" ,"OS","NS" ,"NS" ,"NS" ,"SL"}};
+    private void initTela(){
+        taxaMutacao = 3;
+        taxaCrossover = 60;
+        taxaPopulacao = 1000;
+        
+        lblCrossOver.setText(String.valueOf(taxaCrossover) + " %");
+        lblMutacao.setText(String.valueOf(taxaMutacao) + " %");
+        lblPopulacao.setText(String.valueOf(taxaPopulacao));
+    }
+    
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        InteligenciaController controller = new InteligenciaController();
+        
+        controller.setTaxaDeCrossover(taxaCrossover);
+        controller.setTaxaDeMutacao(taxaMutacao);
+        controller.setSolucao(montaSolucao());
+        
+        int numeroGenes = 100;
+        
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -149,7 +240,7 @@ public class Principal extends javax.swing.JFrame {
                 nodo.setLocation(coordenadaX, coordenadaY);
                 nodo.setLayout(null);
                 if (!mapa[y][x].equals(" ")){
-                    nodo = initParedes(mapa[y][x],nodo);
+                    nodo = initParedes(mapa[y][x],nodo,x,y);
                 }
                 
                 this.add(nodo);
@@ -159,11 +250,12 @@ public class Principal extends javax.swing.JFrame {
         }
     }
     
-    public JPanel initParedes(String value,JPanel nodo){
+    public JPanel initParedes(String value,JPanel nodo,int x,int y){
         JPanel parede; 
         int counter = 0;
         String newValue;
         Color corParede = Color.blue;
+        boolean lgAdiciona = false;
         
         while(true){
             try{
@@ -199,14 +291,30 @@ public class Principal extends javax.swing.JFrame {
                     parede.setLocation(0, 36);
                     break;
             }
+            
             nodo.add(parede);
         }
         
         return nodo;
     }
-
+    //Metodo responsavel por monstar a solucao    
+    private ArrayList<Solucao> montaSolucao(){
+        ArrayList<Solucao> solucao = new ArrayList<Solucao>();
+        solucao.add(new Solucao(11,0));
+        solucao.add(new Solucao(11,4));
+        
+        return solucao;
+    }
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel lblCrossOver;
+    private javax.swing.JLabel lblMutacao;
+    private javax.swing.JLabel lblPopulacao;
     // End of variables declaration//GEN-END:variables
 }
