@@ -5,7 +5,7 @@
  */
 package empilhadeiraautoguiadaia.controller;
 
-import empilhadeiraautoguiadaia.model.Solucao;
+import empilhadeiraautoguiadaia.model.Coordenadas;
 import java.util.ArrayList;
 
 /**
@@ -14,16 +14,18 @@ import java.util.ArrayList;
  */
 
 public class InteligenciaController {
-    private static ArrayList<Solucao> solucao;
+    private static ArrayList<Coordenadas> solucao;
+    private static String labirinto[][];
+    private static int numGenes;
     private static double taxaDeCrossover;
     private static double taxaDeMutacao;
     private static String caracteres;
-
-    public static ArrayList<Solucao> getSolucao() {
+    
+    public static ArrayList<Coordenadas> getSolucao() {
         return solucao;
     }
 
-    public static void setSolucao(ArrayList<Solucao> solucao) {
+    public static void setSolucao(ArrayList<Coordenadas> solucao) {
         InteligenciaController.solucao = solucao;
     }
 
@@ -49,7 +51,26 @@ public class InteligenciaController {
 
     public static void setCaracteres(String caracteres) {
         InteligenciaController.caracteres = caracteres;
+    }  
+
+    public static int getNumGenes() {
+        return numGenes;
+    }
+
+    public static void setNumGenes(int numGenes) {
+        InteligenciaController.numGenes = numGenes;
+    }
+
+    public static String[][] getLabirinto() {
+        return labirinto;
+    }
+
+    public static void setLabirinto(String[][] labirinto) {
+        InteligenciaController.labirinto = labirinto;
     }
     
-    
+    public String getPosicaoLabirinto(Coordenadas coordenadas){
+        return labirinto[coordenadas.getX()][coordenadas.getY()];
+    }
+
 }

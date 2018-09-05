@@ -10,7 +10,8 @@ package empilhadeiraautoguiadaia.view;
 import java.awt.Color;
 import javax.swing.JPanel;
 import empilhadeiraautoguiadaia.controller.InteligenciaController;
-import empilhadeiraautoguiadaia.model.Solucao;
+import empilhadeiraautoguiadaia.model.Populacao;
+import empilhadeiraautoguiadaia.model.Coordenadas;
 import java.util.ArrayList;
 
 /**
@@ -35,6 +36,7 @@ public class Principal extends javax.swing.JFrame {
     private int taxaMutacao;
     private int taxaPopulacao;
     private int taxaCrossover;
+    private int numeroGenes;
     /**
      * Creates new form Principal
      */
@@ -153,6 +155,7 @@ public class Principal extends javax.swing.JFrame {
         taxaMutacao = 3;
         taxaCrossover = 60;
         taxaPopulacao = 1000;
+        numeroGenes   = 100;
         
         lblCrossOver.setText(String.valueOf(taxaCrossover) + " %");
         lblMutacao.setText(String.valueOf(taxaMutacao) + " %");
@@ -166,8 +169,11 @@ public class Principal extends javax.swing.JFrame {
         controller.setTaxaDeCrossover(taxaCrossover);
         controller.setTaxaDeMutacao(taxaMutacao);
         controller.setSolucao(montaSolucao());
+        controller.setNumGenes(numeroGenes);
+        controller.setLabirinto(mapa);
         
-        int numeroGenes = 100;
+        Populacao populacao = new Populacao(numeroGenes, taxaPopulacao);
+        
         
         
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -298,10 +304,10 @@ public class Principal extends javax.swing.JFrame {
         return nodo;
     }
     //Metodo responsavel por monstar a solucao    
-    private ArrayList<Solucao> montaSolucao(){
-        ArrayList<Solucao> solucao = new ArrayList<Solucao>();
-        solucao.add(new Solucao(11,0));
-        solucao.add(new Solucao(11,4));
+    private ArrayList<Coordenadas> montaSolucao(){
+        ArrayList<Coordenadas> solucao = new ArrayList<Coordenadas>();
+        solucao.add(new Coordenadas(11,0));
+        solucao.add(new Coordenadas(11,4));
         
         return solucao;
     }

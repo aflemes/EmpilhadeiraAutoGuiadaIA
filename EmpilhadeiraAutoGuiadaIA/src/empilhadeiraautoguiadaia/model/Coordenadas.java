@@ -9,11 +9,11 @@ package empilhadeiraautoguiadaia.model;
  *
  * @author skyli
  */
-public class Solucao {
+public class Coordenadas {
     private int x;
     private int y;
 
-    public Solucao(int x, int y) {
+    public Coordenadas(int x, int y) {
         this.x = x;
         this.y = y;
     }

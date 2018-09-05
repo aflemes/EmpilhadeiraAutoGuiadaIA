@@ -13,6 +13,14 @@ public class Populacao {
     private Empilhadeira[] empilhadeira;
     private int tamPopulacao; 
 
+    public Populacao(int numGenes, int tamPop) {
+        tamPopulacao = tamPop;
+        empilhadeira = new Empilhadeira[tamPop];
+        for (int i = 0; i < empilhadeira.length; i++) {
+            empilhadeira[i] = new Empilhadeira(numGenes);
+        }
+    }
+    
     public Empilhadeira[] getEmpilhadeira() {
         return empilhadeira;
     }
