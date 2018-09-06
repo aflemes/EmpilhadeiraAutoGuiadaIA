@@ -17,30 +17,26 @@ import java.util.Random;
  */
 public class Empilhadeira {
 
-    private ArrayList<String> direcao;
+    private ArrayList<String> direcao = new ArrayList<String>();
     private InteligenciaController controller;
+    private boolean encontreiSaida;
     private int aptidao;
     private Coordenadas posicao;
     /*
     numGenes seria cada possivel passo
     */
     public Empilhadeira(int numGenes) {
-        ArrayList<String> possibilidades = new ArrayList<>();
+        controller = new InteligenciaController();
+        ArrayList<String> possibilidades = controller.getPosibilidades();
         Random random = new Random();
         
-        controller = new InteligenciaController();
-        
-        possibilidades.add("Sul");
-        possibilidades.add("Norte");
-        possibilidades.add("Oeste");
-        possibilidades.add("Leste");
-        
+        this.setEncontreiSaida(false);
+               
         for (int i = 0; i < numGenes; i++) {
             //gera as possibilidades
             direcao.add(possibilidades.get(random.nextInt(4)));
         }
-        posicao.setX(0);
-        posicao.setY(10);
+        posicao = new Coordenadas(0,10);
         
         geraAptidao();
     }
@@ -90,6 +86,7 @@ public class Empilhadeira {
         for (int i = 0; i < solucao.size(); i++) {
             if (posicao.getX() == solucao.get(i).getX() &&
                 posicao.getY() == solucao.get(i).getY()){
+                this.setEncontreiSaida(true);
                 return true;
             }
         }
@@ -173,5 +170,36 @@ public class Empilhadeira {
         
         return 0;
     }
+    
+    //cria um indivíduo com os genes definidos
+    public Empilhadeira(ArrayList<String> direcao) {    
+        Random random = new Random();
+        ArrayList<String> possibilidades = controller.getPosibilidades();
+        ArrayList<String> direcaoTemp = new ArrayList<String>();
+        this.direcao = direcao;
+        //se for mutar, cria um gene aleatório
+        if (random.nextDouble() <= controller.getTaxaDeMutacao()) {
+            
+            int posAleatoria = random.nextInt(controller.getNumGenes());
+            for (int i = 0; i < controller.getNumGenes(); i++) {
+                if (i==posAleatoria){
+                    direcaoTemp.add(possibilidades.get(random.nextInt(4)));
+                }else{
+                    direcaoTemp.add(direcao.get(i));
+                }
+            }
+            this.direcao = direcaoTemp;   
+        }
+        geraAptidao();
+    }
+
+    public boolean isEncontreiSaida() {
+        return encontreiSaida;
+    }
+
+    public void setEncontreiSaida(boolean encontreiSaida) {
+        this.encontreiSaida = encontreiSaida;
+    }
       
+    
 }

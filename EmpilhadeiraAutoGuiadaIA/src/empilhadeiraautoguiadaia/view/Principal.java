@@ -37,6 +37,9 @@ public class Principal extends javax.swing.JFrame {
     private int taxaPopulacao;
     private int taxaCrossover;
     private int numeroGenes;
+    private int numMaximoTentativas;
+    private boolean elitismo;
+    private boolean encontrouSolucao;
     /**
      * Creates new form Principal
      */
@@ -156,6 +159,8 @@ public class Principal extends javax.swing.JFrame {
         taxaCrossover = 60;
         taxaPopulacao = 1000;
         numeroGenes   = 100;
+        numMaximoTentativas = 1000;
+        elitismo      = true;
         
         lblCrossOver.setText(String.valueOf(taxaCrossover) + " %");
         lblMutacao.setText(String.valueOf(taxaMutacao) + " %");
@@ -165,6 +170,8 @@ public class Principal extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         InteligenciaController controller = new InteligenciaController();
+
+        int contador = 0;
         
         controller.setTaxaDeCrossover(taxaCrossover);
         controller.setTaxaDeMutacao(taxaMutacao);
@@ -173,6 +180,21 @@ public class Principal extends javax.swing.JFrame {
         controller.setLabirinto(mapa);
         
         Populacao populacao = new Populacao(numeroGenes, taxaPopulacao);
+        
+        while(!encontrouSolucao && (contador <= numMaximoTentativas)){
+            //cria nova populacao
+            populacao = controller.novaGeracao(populacao, elitismo);
+            
+            System.out.println("Geracao Aptidao: " + populacao.getEmpilhadeira(0).getAptidao());
+            
+            encontrouSolucao = populacao.temSolucao();
+            
+            contador++;
+        }
+        
+        if (encontrouSolucao){
+            System.out.println("Encontrei a solucao");
+        }
         
         
         
