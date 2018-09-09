@@ -21,12 +21,14 @@ public class Empilhadeira {
     private InteligenciaController controller;
     private boolean encontreiSaida;
     private int aptidao;
+    private ArrayList<Coordenadas> posicoesVisitadas;
     private Coordenadas posicao;
     /*
     numGenes seria cada possivel passo
     */
     public Empilhadeira(int numGenes) {
         controller = new InteligenciaController();
+        
         ArrayList<String> possibilidades = controller.getPosibilidades();
         Random random = new Random();
         
@@ -35,8 +37,15 @@ public class Empilhadeira {
         for (int i = 0; i < numGenes; i++) {
             //gera as possibilidades
             direcao.add(possibilidades.get(random.nextInt(4)));
+            
         }
-        posicao = new Coordenadas(0,10);
+        
+       
+        
+//        roadDefinida();
+//        roadToSucess();
+        
+        posicao = new Coordenadas(0,9);
         
         geraAptidao();
     }
@@ -44,25 +53,37 @@ public class Empilhadeira {
     private void geraAptidao() {
         //busca a saida do labirinto
         ArrayList<Coordenadas> solucao = controller.getSolucao();
+        boolean solucaoEncontrada = false;
        
-        for (int i = 0; i < controller.getNumGenes(); i++) {
+        for (int i = 0; i < direcao.size(); i++) {
+            if (solucaoEncontrada){
+                direcao.set(i,"-");
+                continue;
+            }
+            
             switch(direcao.get(i)){
                 case "Norte":
-                    aptidao += ultrapassaLimites("Norte");
+                    aptidao += ultrapassaLimites("Norte",i);
                     break;
                 case "Sul":
-                    aptidao += ultrapassaLimites("Sul");
+                    aptidao += ultrapassaLimites("Sul",i);
                     break;
                 case "Leste":
-                    aptidao += ultrapassaLimites("Leste");
+                    aptidao += ultrapassaLimites("Leste",i);
                     break;
                 case "Oeste":
-                    aptidao += ultrapassaLimites("Oeste");
+                    aptidao += ultrapassaLimites("Oeste",i);
                     break;
             }
-            if (verificaSolucao())
-                break;
+            
+            solucaoEncontrada = verificaSolucao();
+            
+            if (solucaoEncontrada){
+                aptidao+=1000;
+            }
         }
+        
+//        System.out.println(direcao + " - " + aptidao);
     }
     public ArrayList<String> getDirecao() {
         return direcao;
@@ -83,6 +104,7 @@ public class Empilhadeira {
     private boolean verificaSolucao(){
         ArrayList<Coordenadas> solucao = controller.getSolucao();
         
+//        System.out.println(" posicao x - y " + posicao.getX() + " - " + posicao.getY());
         for (int i = 0; i < solucao.size(); i++) {
             if (posicao.getX() == solucao.get(i).getX() &&
                 posicao.getY() == solucao.get(i).getY()){
@@ -93,95 +115,162 @@ public class Empilhadeira {
         
         return false;
     }
-    private int ultrapassaLimites(String destino){
+    private int ultrapassaLimites(String destino, int nodo){
         String posicaoNoLabirinto = controller.getPosicaoLabirinto(posicao);
         
+//        System.out.println("destino posicao x - y " + destino + posicao.getX() + " - " + posicao.getY());
         switch (destino){
             case "Norte":               
-                if (posicao.getY() - 1 > 0){
+                if (posicao.getY() - 1 >= 0){
                     //nao extrapolou o limite do labirinto
-                    if (posicaoNoLabirinto.indexOf("N") > 0){
+                    if (posicaoNoLabirinto.indexOf("N") >= 0){
                         //Esbarrou em uma parede
-                        return -1;
+//                        posicao.setY(posicao.getY() - 1);
+                        direcao.set(nodo,"-");
+                        return 0;
                     }
                     else
                     {
                         //Nao encontrou nenhuma parede;
                         //Seta nova posicao
                         posicao.setY(posicao.getY() - 1);
-                        return 5;
+                        
+                        if (isNovaPosicao()){
+                            return 20;
+                        }else{
+                            return 0;
+                        }                        
                     }
                 }
-                else
-                    return -1;
+                else{
+//                    direcao.set(nodo,"Norte-" + posicao.getY());
+                    direcao.set(nodo,"-");
+                    return -20;
+                }
+                    
             case "Sul":
                 if (posicao.getY() + 1 < 10){
                     //nao extrapolou o limite do labirinto
-                    if (posicaoNoLabirinto.indexOf("S") > 0){
+                    if (posicaoNoLabirinto.indexOf("S") >= 0){
                         //Esbarrou em uma parede
-                        return -1;
+//                        posicao.setY(posicao.getY() + 1);
+                        direcao.set(nodo,"-");
+                        return 0;
                     }
                     else
                     {
                         //Nao encontrou nenhuma parede;
                         //Seta nova posicao
                         posicao.setY(posicao.getY() + 1);
-                        return 5;
+                        
+                        if (isNovaPosicao()){
+                            return 10;
+                        }else{
+                            return 0;
+                        }
                     }
                 }
-                else
-                    return -1;
+                else{
+//                    direcao.set(nodo,"Sul-" + posicao.getY());
+                    direcao.set(nodo,"-");
+                    return -20;
+                }
+                    
                 
             case "Leste":
                 if (posicao.getX() + 1 < 10){
                     //nao extrapolou o limite do labirinto
-                    if (posicaoNoLabirinto.indexOf("L") > 0){
+                    if (posicaoNoLabirinto.indexOf("L") >= 0){
                         //Esbarrou em uma parede
-                        return -1;
+//                        posicao.setX(posicao.getX() + 1);
+                        direcao.set(nodo,"-");
+                        return 0;
                     }
                     else
                     {
                         //Nao encontrou nenhuma parede;
                         //Seta nova posicao
                         posicao.setX(posicao.getX() + 1);
-                        return 5;
+                        
+                        if (isNovaPosicao()){
+                            return 20;
+                        }else{
+                            return 0;
+                        }
                     }
                 }
-                else
-                    return -1;                
+                else{
+//                    direcao.set(nodo,"Leste-" + posicao.getX());
+                    direcao.set(nodo,"-");
+                    return -20;
+                }
                
             case "Oeste":
-                if (posicao.getX() - 1 > 0){
+                if (posicao.getX() - 1 >= 0){
                     //nao extrapolou o limite do labirinto
-                    if (posicaoNoLabirinto.indexOf("O") > 0){
+                    if (posicaoNoLabirinto.indexOf("O") >= 0){
                         //Esbarrou em uma parede
-                        return -1;
+//                        posicao.setX(posicao.getX() - 1);
+                        direcao.set(nodo,"-");
+                        return 0;
                     }
                     else
                     {
                         //Nao encontrou nenhuma parede;
                         posicao.setX(posicao.getX() - 1);
-                        return 5;
+                        
+                        if (isNovaPosicao()){
+                            return 20;
+                        }else{
+                            return 0;
+                        }
                     }
                 }
-                else
-                    return -1;
+                else{
+//                    direcao.set(nodo,"Oeste-" + posicao.getX());
+                    direcao.set(nodo,"-");
+                    return -20;
+                }
+                   
         }
         
         return 0;
+    }
+    public boolean isNovaPosicao(){
+        Coordenadas cordTemp;
+        
+        if (posicoesVisitadas == null){
+            posicoesVisitadas = new ArrayList<Coordenadas>();
+        }
+        cordTemp = new Coordenadas(posicao.getX(), posicao.getY());
+        
+        posicoesVisitadas.add(cordTemp);
+        
+        for (int i = 0; i < posicoesVisitadas.size() - 1; i++) {
+            cordTemp = posicoesVisitadas.get(i);
+            
+            if (posicao.getX() == cordTemp.getX() && posicao.getY() == cordTemp.getY()){
+                return false;
+            }
+        }
+        
+        return true;
+        
     }
     
     //cria um indivíduo com os genes definidos
     public Empilhadeira(ArrayList<String> direcao) {    
         Random random = new Random();
+        controller = new InteligenciaController();
+                
         ArrayList<String> possibilidades = controller.getPosibilidades();
         ArrayList<String> direcaoTemp = new ArrayList<String>();
         this.direcao = direcao;
         //se for mutar, cria um gene aleatório
         if (random.nextDouble() <= controller.getTaxaDeMutacao()) {
             
-            int posAleatoria = random.nextInt(controller.getNumGenes());
-            for (int i = 0; i < controller.getNumGenes(); i++) {
+            int posAleatoria = random.nextInt(direcao.size());
+            for (int i = 0; i < direcao.size(); i++) {
                 if (i==posAleatoria){
                     direcaoTemp.add(possibilidades.get(random.nextInt(4)));
                 }else{
@@ -190,7 +279,61 @@ public class Empilhadeira {
             }
             this.direcao = direcaoTemp;   
         }
+        posicao = new Coordenadas(0,9);
+        
         geraAptidao();
+    }
+    
+    public void roadDefinida(){
+        direcao.add("Norte");
+        direcao.add("Norte");
+        direcao.add("Norte");
+        direcao.add("Sul");
+        direcao.add("Leste");
+        direcao.add("Leste");
+        direcao.add("Norte");
+        direcao.add("Oeste");
+        direcao.add("Leste");
+        direcao.add("Oeste");
+        direcao.add("Sul");
+        direcao.add("Sul");
+        direcao.add("Sul");
+        direcao.add("Norte");
+        direcao.add("Leste");
+        direcao.add("Leste");
+        direcao.add("Norte");
+        direcao.add("Norte");
+        direcao.add("Norte");
+        
+    }
+    
+    public void roadToSucess(){
+        direcao.add("Norte");
+        direcao.add("Norte");
+        direcao.add("Norte");
+        direcao.add("Leste");
+        direcao.add("Leste");
+        direcao.add("Norte");
+        direcao.add("Norte");
+        direcao.add("Leste");
+        direcao.add("Norte");
+        direcao.add("Oeste");
+        direcao.add("Oeste");
+        direcao.add("Oeste");
+        direcao.add("Norte");
+        direcao.add("Leste");
+        direcao.add("Leste");
+        direcao.add("Leste");
+        direcao.add("Leste");
+        direcao.add("Leste");
+        direcao.add("Sul");
+        direcao.add("Leste");
+        direcao.add("Leste");
+        direcao.add("Norte");
+        direcao.add("Leste");
+        direcao.add("Leste");
+        direcao.add("Sul");
+        direcao.add("Sul");
     }
 
     public boolean isEncontreiSaida() {
@@ -203,3 +346,4 @@ public class Empilhadeira {
       
     
 }
+//

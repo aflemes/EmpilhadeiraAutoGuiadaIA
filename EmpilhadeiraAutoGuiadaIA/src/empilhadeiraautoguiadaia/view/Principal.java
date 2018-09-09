@@ -12,7 +12,12 @@ import javax.swing.JPanel;
 import empilhadeiraautoguiadaia.controller.InteligenciaController;
 import empilhadeiraautoguiadaia.model.Populacao;
 import empilhadeiraautoguiadaia.model.Coordenadas;
+import java.awt.Component;
+import java.awt.Container;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JRootPane;
 
 /**
  *
@@ -28,7 +33,7 @@ public class Principal extends javax.swing.JFrame {
                                {"OS","NS" ,"NS" ,"NL" ,"ONS","S" ,"NS" ,"SL" ,"ONL","OL",""},
                                {"ON","NSL","ON" ,"L"  ,"ON" ,"NS","NS" ,"NS" ,"SL" ,"SO","X"},
                                {"OS","NS" ,"L"  ,"O"  ,"S"  ,"NS","NS" ,"NS" ,"NS" ,"NL",""},
-                               {"ON","NS" ,"SL" ,"OL" ,"ONS","N" ,"NL" ,"NO" ,"NS" ,"NL",""},
+                               {"ON","NS" ,"SL" ,"OL" ,"ONS","N" ,"NL" ,"NO" ,"NS" ,"L" ,""},
                                {"O" ,"N"  ,"NS" ,"S"  ,"N"  ,"L" ,"OL" ,"OS" ,"NS" ,"NL",""},
                                {"OL","OL" ,"ONS","NSL","OL" ,"OL","OS" ,"NS" ,"NS" ,"L" ,""},
                                {"SL","OS" ,"NS" ,"NS" ,"SL" ,"OS","NS" ,"NS" ,"NS" ,"SL",""}};
@@ -40,6 +45,7 @@ public class Principal extends javax.swing.JFrame {
     private int numMaximoTentativas;
     private boolean elitismo;
     private boolean encontrouSolucao;
+    private ArrayList<String> direcao;
     /**
      * Creates new form Principal
      */
@@ -155,11 +161,11 @@ public class Principal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void initTela(){
-        taxaMutacao = 3;
-        taxaCrossover = 60;
-        taxaPopulacao = 1000;
-        numeroGenes   = 100;
-        numMaximoTentativas = 1000;
+        taxaMutacao = 30;
+        taxaCrossover = 100;
+        taxaPopulacao = 5000;
+        numeroGenes   = 200;
+        numMaximoTentativas = 200;
         elitismo      = true;
         
         lblCrossOver.setText(String.valueOf(taxaCrossover) + " %");
@@ -181,26 +187,30 @@ public class Principal extends javax.swing.JFrame {
         
         Populacao populacao = new Populacao(numeroGenes, taxaPopulacao);
         
-        while(!encontrouSolucao && (contador <= numMaximoTentativas)){
+        while(!encontrouSolucao && (contador < numMaximoTentativas)){
             //cria nova populacao
             populacao = controller.novaGeracao(populacao, elitismo);
             
             System.out.println("Geracao Aptidao: " + populacao.getEmpilhadeira(0).getAptidao());
             
+            System.out.println(populacao.getEmpilhadeira(0).getDirecao());
+              
             encontrouSolucao = populacao.temSolucao();
             
+            direcao = populacao.getEmpilhadeira(0).getDirecao();
+                    
             contador++;
+            
+            if (encontrouSolucao){
+                System.out.println("Encontrei a solucao");
+                break;
+            }
         }
         
-        if (encontrouSolucao){
-            System.out.println("Encontrei a solucao");
-        }
-        
-        
+        desenhaAptidao();
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -248,8 +258,7 @@ public class Principal extends javax.swing.JFrame {
         for (int y = 0; y < 10; y++) {
             JPanel nodo = new JPanel();
             nodo.setSize(50, 40);
-            nodo.setOpaque(false);
-//            nodo.setBackground(Color.white);
+//            nodo.setOpaque(false);
             nodo.setLocation(coordenadaX, coordenadaY);
             nodo.setVisible(true);
             nodo.setLayout(null);
@@ -263,13 +272,15 @@ public class Principal extends javax.swing.JFrame {
                 
                 nodo = new JPanel();
                 nodo.setSize(50, 40);
-                nodo.setOpaque(false);
-//                nodo.setBackground(Color.white);
+                //nodo.setOpaque(false);
+                nodo.setBackground(Color.white);
                 nodo.setLocation(coordenadaX, coordenadaY);
                 nodo.setLayout(null);
                 if (!mapa[y][x].equals(" ")){
                     nodo = initParedes(mapa[y][x],nodo,x,y);
                 }
+                
+                nodo.setName("x:" + String.valueOf(x) + "y:" + String.valueOf(y));
                 
                 this.add(nodo);
             }
@@ -301,7 +312,7 @@ public class Principal extends javax.swing.JFrame {
                 case "N":
                     parede.setBackground(corParede);
                     parede.setSize(50,4);
-                    parede.setLocation(0, 0);
+                    parede.setLocation(0, 0);                    
                     break;
                 case "O":
                     parede.setBackground(corParede);
@@ -328,10 +339,97 @@ public class Principal extends javax.swing.JFrame {
     //Metodo responsavel por monstar a solucao    
     private ArrayList<Coordenadas> montaSolucao(){
         ArrayList<Coordenadas> solucao = new ArrayList<Coordenadas>();
-        solucao.add(new Coordenadas(11,0));
-        solucao.add(new Coordenadas(11,4));
+        solucao.add(new Coordenadas(9,0));
+        solucao.add(new Coordenadas(9,4));
         
         return solucao;
+    }
+    
+    private void desenhaAptidao(){
+        JPanel nodo;
+        
+        //Desenha o comeco
+        nodo = (JPanel) findComponentByName(this,"x:0y:9");
+        if (nodo != null){
+            nodo.setBackground(Color.red);
+            nodo.repaint();
+            nodo.revalidate();
+        }
+        
+        Coordenadas coordenadas = new Coordenadas(0, 9);
+        for (int i = 0; i < direcao.size(); i++) {
+            
+            switch(direcao.get(i)){
+                case "Norte":
+                    coordenadas.setX(coordenadas.getX());
+                    coordenadas.setY(coordenadas.getY() - 1);
+                    break;
+                case "Sul":
+                    coordenadas.setX(coordenadas.getX());
+                    coordenadas.setY(coordenadas.getY() + 1);
+                    break;                    
+                case "Leste":
+                    coordenadas.setX(coordenadas.getX() + 1);
+                    coordenadas.setY(coordenadas.getY());
+                    break;
+
+                case "Oeste":
+                    coordenadas.setX(coordenadas.getX() - 1);
+                    coordenadas.setY(coordenadas.getY());
+                    break;
+            }
+            
+            nodo = (JPanel) findComponentByName(this,
+                                                "x:" + String.valueOf(coordenadas.getX()) + 
+                                                "y:" + String.valueOf(coordenadas.getY()));
+            
+            if (nodo != null){
+                nodo.setBackground(Color.black);
+                nodo.repaint();
+                nodo.revalidate();
+            }
+        }
+        
+    }
+    
+    public Component findComponentByName(Container container, String componentName) {
+
+       for (Component component: container.getComponents()) {
+           if (componentName.equals(component.getName())) {
+               return component;
+           }
+           else
+               if (component instanceof JRootPane) {
+                   JRootPane nestedJRootPane = (JRootPane)component;
+                   return findComponentByName(nestedJRootPane.getContentPane(), componentName);
+                 }
+       }
+       return null;
+    }
+     
+    public void clearLabirinto(Container container){
+        String nome = "";
+        for (Component component: container.getComponents()) {
+            try{
+                nome = component.getName();
+                
+                if (!nome.equals("null")) {
+                    component.setBackground(Color.white);
+                }
+                else
+                    if (component instanceof JRootPane) {
+                        JRootPane nestedJRootPane = (JRootPane)component;
+                        clearLabirinto(nestedJRootPane.getContentPane());
+                    }
+            }
+            catch(Exception e){
+                if (component instanceof JRootPane) {
+                    JRootPane nestedJRootPane = (JRootPane)component;
+                    clearLabirinto(nestedJRootPane.getContentPane());
+                }
+            }
+            
+        }
     }
    
     // Variables declaration - do not modify//GEN-BEGIN:variables

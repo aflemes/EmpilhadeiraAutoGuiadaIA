@@ -94,7 +94,8 @@ public class InteligenciaController {
     }
     
     public String getPosicaoLabirinto(Coordenadas coordenadas){
-        return labirinto[coordenadas.getX()][coordenadas.getY()];
+        //
+        return labirinto[coordenadas.getY()][coordenadas.getX()];
     }
     
     public static Populacao novaGeracao(Populacao populacao, boolean elitismo) {
