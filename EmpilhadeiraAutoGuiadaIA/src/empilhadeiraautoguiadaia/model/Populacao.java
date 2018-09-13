@@ -5,6 +5,8 @@
  */
 package empilhadeiraautoguiadaia.model;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author skyli
@@ -12,7 +14,7 @@ package empilhadeiraautoguiadaia.model;
 public class Populacao {
     private Empilhadeira[] empilhadeira;
     private int tamPopulacao; 
-
+   
     public Populacao(int numGenes, int tamPop) {
         tamPopulacao = tamPop;
         empilhadeira = new Empilhadeira[tamPop];
@@ -65,6 +67,18 @@ public class Populacao {
         return false;
     }
     
+    public int getMelhorSolucao() {
+        
+        for (int i = 0; i < tamPopulacao; i++) {
+            if (empilhadeira[i].isEncontreiSaida()){
+                if (empilhadeira[i].getAptidao() == 1480)
+                    return i;
+            }
+        }
+        
+        return 0;
+    }
+    
     //número de indivíduos existentes na população
     public int getNumEmpilhadeiras() {
         int num = 0;
@@ -92,6 +106,38 @@ public class Populacao {
     
     public Empilhadeira getEmpilhadeira(int pos) {
         return empilhadeira[pos];
+    }
+    
+    public void getSolucaoOtima(){
+        ArrayList<String> solucaoOtima = new ArrayList<String>();
+        
+        solucaoOtima.add("Norte");
+        solucaoOtima.add("Norte");
+        solucaoOtima.add("Norte");
+        solucaoOtima.add("Leste");
+        solucaoOtima.add("Leste");
+        solucaoOtima.add("Norte");
+        solucaoOtima.add("Norte");
+        solucaoOtima.add("Leste");
+        solucaoOtima.add("Norte");
+        solucaoOtima.add("Oeste");
+        solucaoOtima.add("Oeste");
+        solucaoOtima.add("Oeste");
+        solucaoOtima.add("Norte");
+        solucaoOtima.add("Leste");
+        solucaoOtima.add("Leste");
+        solucaoOtima.add("Leste");
+        solucaoOtima.add("Leste");
+        solucaoOtima.add("Leste");
+        solucaoOtima.add("Norte");
+        solucaoOtima.add("Norte");
+        solucaoOtima.add("Leste");
+        solucaoOtima.add("Leste");
+        solucaoOtima.add("Leste");
+        solucaoOtima.add("Sul");
+        solucaoOtima.add("Leste");
+        solucaoOtima.add("Norte");
+        solucaoOtima.add("Leste");
     }
     
     

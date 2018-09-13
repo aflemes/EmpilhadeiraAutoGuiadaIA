@@ -45,6 +45,8 @@ public class Principal extends javax.swing.JFrame {
     private int numMaximoTentativas;
     private boolean elitismo;
     private boolean encontrouSolucao;
+    private int melhorSolucao;
+    private int melhorAptidao = 9999;
     private ArrayList<String> direcao;
     /**
      * Creates new form Principal
@@ -74,6 +76,11 @@ public class Principal extends javax.swing.JFrame {
         lblPopulacao = new javax.swing.JLabel();
         lblCrossOver = new javax.swing.JLabel();
         lblMutacao = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jlblFitness = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jlblFitnessEncontrado = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Empilhadeira AutoGuiada ");
@@ -93,68 +100,108 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel3.setText("População:");
 
-        jLabel4.setText("Taxa de Crossover:");
+        jLabel4.setText("Taxa de crossover:");
 
         jLabel5.setText("Taxa de mutação:");
 
         lblPopulacao.setMaximumSize(new java.awt.Dimension(53, 14));
         lblPopulacao.setMinimumSize(new java.awt.Dimension(53, 14));
         lblPopulacao.setName("jlblPopulacao"); // NOI18N
+        lblPopulacao.setPreferredSize(new java.awt.Dimension(53, 14));
 
         lblCrossOver.setName("jlblCrossover"); // NOI18N
+        lblCrossOver.setPreferredSize(new java.awt.Dimension(53, 14));
 
         lblMutacao.setName("jlblMutacao"); // NOI18N
+        lblMutacao.setPreferredSize(new java.awt.Dimension(53, 14));
+
+        jLabel6.setText("Melhor fitness:");
+
+        jlblFitness.setName("jlblFitness"); // NOI18N
+        jlblFitness.setPreferredSize(new java.awt.Dimension(53, 14));
+
+        jLabel7.setText("Fitness:");
+
+        jlblFitnessEncontrado.setName("jlblFitness"); // NOI18N
+        jlblFitnessEncontrado.setPreferredSize(new java.awt.Dimension(53, 14));
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel8.setText("Saída");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(35, 35, 35))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 635, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblPopulacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblCrossOver)
-                            .addComponent(lblMutacao))))
-                .addGap(52, 52, 52))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(25, 25, 25)
                 .addComponent(jLabel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jButton1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel7)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jlblFitnessEncontrado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(612, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel5)
+                                .addComponent(jLabel4)
+                                .addComponent(jLabel3)
+                                .addComponent(jLabel6))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblPopulacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblCrossOver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblMutacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jlblFitness, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addContainerGap())
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(jLabel2)
+                            .addGap(157, 157, 157)))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(40, 40, 40)
+                .addGap(64, 64, 64)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 309, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(lblPopulacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 143, Short.MAX_VALUE)
+                .addComponent(jLabel8)
+                .addGap(61, 61, 61)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(lblPopulacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(lblCrossOver, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel5)
+                            .addComponent(lblMutacao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel6))
+                    .addComponent(jlblFitness, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(lblCrossOver))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(lblMutacao))
-                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jlblFitnessEncontrado, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(32, 32, 32)
                 .addComponent(jLabel1)
-                .addGap(2, 2, 2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1)
-                .addGap(30, 30, 30))
+                .addGap(36, 36, 36))
         );
 
         pack();
@@ -165,12 +212,13 @@ public class Principal extends javax.swing.JFrame {
         taxaCrossover = 100;
         taxaPopulacao = 5000;
         numeroGenes   = 200;
-        numMaximoTentativas = 200;
+        numMaximoTentativas = 50;
         elitismo      = true;
         
         lblCrossOver.setText(String.valueOf(taxaCrossover) + " %");
         lblMutacao.setText(String.valueOf(taxaMutacao) + " %");
         lblPopulacao.setText(String.valueOf(taxaPopulacao));
+        jlblFitness.setText("1480");
     }
     
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -187,28 +235,40 @@ public class Principal extends javax.swing.JFrame {
         
         Populacao populacao = new Populacao(numeroGenes, taxaPopulacao);
         
-        while(!encontrouSolucao && (contador < numMaximoTentativas)){
+        while(contador < numMaximoTentativas){
             //cria nova populacao
             populacao = controller.novaGeracao(populacao, elitismo);
-            
-            System.out.println("Geracao Aptidao: " + populacao.getEmpilhadeira(0).getAptidao());
-            
-            System.out.println(populacao.getEmpilhadeira(0).getDirecao());
-              
+                          
             encontrouSolucao = populacao.temSolucao();
-            
-            direcao = populacao.getEmpilhadeira(0).getDirecao();
-                    
-            contador++;
+            System.out.println(" Aptidao -> " + populacao.getEmpilhadeira(0).getAptidao());
             
             if (encontrouSolucao){
-                System.out.println("Encontrei a solucao");
-                break;
+                melhorSolucao = populacao.getMelhorSolucao();
+                if (populacao.getEmpilhadeira(0).getAptidao() < melhorAptidao){
+                    direcao = populacao.getEmpilhadeira(0).getDirecao();
+                    melhorAptidao = populacao.getEmpilhadeira(0).getAptidao();
+                }
+                else
+                    if (melhorSolucao > 0){
+                        direcao = populacao.getEmpilhadeira(melhorSolucao).getDirecao();
+                        melhorAptidao = populacao.getEmpilhadeira(melhorSolucao).getAptidao();
+                        break;
+                    }
             }
+                    
+            contador++;
         }
         
-        desenhaAptidao();
-        
+        if (direcao != null){
+            desenhaAptidao();
+            jlblFitnessEncontrado.setText(String.valueOf(melhorAptidao));
+            
+            if (melhorSolucao > 0){
+                System.out.println("Encontrei a melhor solucao");
+            }
+        }
+        else
+            System.out.println("Nao encontrei a solucao");
     }//GEN-LAST:event_jButton1ActionPerformed
 
     
@@ -439,6 +499,11 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jlblFitness;
+    private javax.swing.JLabel jlblFitnessEncontrado;
     private javax.swing.JLabel lblCrossOver;
     private javax.swing.JLabel lblMutacao;
     private javax.swing.JLabel lblPopulacao;

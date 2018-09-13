@@ -40,11 +40,6 @@ public class Empilhadeira {
             
         }
         
-       
-        
-//        roadDefinida();
-//        roadToSucess();
-        
         posicao = new Coordenadas(0,9);
         
         geraAptidao();
@@ -82,8 +77,6 @@ public class Empilhadeira {
                 aptidao+=1000;
             }
         }
-        
-//        System.out.println(direcao + " - " + aptidao);
     }
     public ArrayList<String> getDirecao() {
         return direcao;
@@ -117,15 +110,13 @@ public class Empilhadeira {
     }
     private int ultrapassaLimites(String destino, int nodo){
         String posicaoNoLabirinto = controller.getPosicaoLabirinto(posicao);
-        
-//        System.out.println("destino posicao x - y " + destino + posicao.getX() + " - " + posicao.getY());
+
         switch (destino){
             case "Norte":               
                 if (posicao.getY() - 1 >= 0){
                     //nao extrapolou o limite do labirinto
                     if (posicaoNoLabirinto.indexOf("N") >= 0){
                         //Esbarrou em uma parede
-//                        posicao.setY(posicao.getY() - 1);
                         direcao.set(nodo,"-");
                         return 0;
                     }
@@ -143,9 +134,8 @@ public class Empilhadeira {
                     }
                 }
                 else{
-//                    direcao.set(nodo,"Norte-" + posicao.getY());
                     direcao.set(nodo,"-");
-                    return -20;
+                    return 0;
                 }
                     
             case "Sul":
@@ -153,7 +143,7 @@ public class Empilhadeira {
                     //nao extrapolou o limite do labirinto
                     if (posicaoNoLabirinto.indexOf("S") >= 0){
                         //Esbarrou em uma parede
-//                        posicao.setY(posicao.getY() + 1);
+
                         direcao.set(nodo,"-");
                         return 0;
                     }
@@ -171,9 +161,8 @@ public class Empilhadeira {
                     }
                 }
                 else{
-//                    direcao.set(nodo,"Sul-" + posicao.getY());
                     direcao.set(nodo,"-");
-                    return -20;
+                    return 0;
                 }
                     
                 
@@ -182,7 +171,6 @@ public class Empilhadeira {
                     //nao extrapolou o limite do labirinto
                     if (posicaoNoLabirinto.indexOf("L") >= 0){
                         //Esbarrou em uma parede
-//                        posicao.setX(posicao.getX() + 1);
                         direcao.set(nodo,"-");
                         return 0;
                     }
@@ -200,9 +188,8 @@ public class Empilhadeira {
                     }
                 }
                 else{
-//                    direcao.set(nodo,"Leste-" + posicao.getX());
                     direcao.set(nodo,"-");
-                    return -20;
+                    return 0;
                 }
                
             case "Oeste":
@@ -210,7 +197,6 @@ public class Empilhadeira {
                     //nao extrapolou o limite do labirinto
                     if (posicaoNoLabirinto.indexOf("O") >= 0){
                         //Esbarrou em uma parede
-//                        posicao.setX(posicao.getX() - 1);
                         direcao.set(nodo,"-");
                         return 0;
                     }
@@ -227,9 +213,8 @@ public class Empilhadeira {
                     }
                 }
                 else{
-//                    direcao.set(nodo,"Oeste-" + posicao.getX());
                     direcao.set(nodo,"-");
-                    return -20;
+                    return 0;
                 }
                    
         }
@@ -252,10 +237,8 @@ public class Empilhadeira {
             if (posicao.getX() == cordTemp.getX() && posicao.getY() == cordTemp.getY()){
                 return false;
             }
-        }
-        
+        }        
         return true;
-        
     }
     
     //cria um indivíduo com os genes definidos
@@ -284,58 +267,6 @@ public class Empilhadeira {
         geraAptidao();
     }
     
-    public void roadDefinida(){
-        direcao.add("Norte");
-        direcao.add("Norte");
-        direcao.add("Norte");
-        direcao.add("Sul");
-        direcao.add("Leste");
-        direcao.add("Leste");
-        direcao.add("Norte");
-        direcao.add("Oeste");
-        direcao.add("Leste");
-        direcao.add("Oeste");
-        direcao.add("Sul");
-        direcao.add("Sul");
-        direcao.add("Sul");
-        direcao.add("Norte");
-        direcao.add("Leste");
-        direcao.add("Leste");
-        direcao.add("Norte");
-        direcao.add("Norte");
-        direcao.add("Norte");
-        
-    }
-    
-    public void roadToSucess(){
-        direcao.add("Norte");
-        direcao.add("Norte");
-        direcao.add("Norte");
-        direcao.add("Leste");
-        direcao.add("Leste");
-        direcao.add("Norte");
-        direcao.add("Norte");
-        direcao.add("Leste");
-        direcao.add("Norte");
-        direcao.add("Oeste");
-        direcao.add("Oeste");
-        direcao.add("Oeste");
-        direcao.add("Norte");
-        direcao.add("Leste");
-        direcao.add("Leste");
-        direcao.add("Leste");
-        direcao.add("Leste");
-        direcao.add("Leste");
-        direcao.add("Sul");
-        direcao.add("Leste");
-        direcao.add("Leste");
-        direcao.add("Norte");
-        direcao.add("Leste");
-        direcao.add("Leste");
-        direcao.add("Sul");
-        direcao.add("Sul");
-    }
-
     public boolean isEncontreiSaida() {
         return encontreiSaida;
     }
@@ -343,7 +274,4 @@ public class Empilhadeira {
     public void setEncontreiSaida(boolean encontreiSaida) {
         this.encontreiSaida = encontreiSaida;
     }
-      
-    
 }
-//
